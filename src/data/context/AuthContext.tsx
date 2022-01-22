@@ -1,13 +1,12 @@
-import route from 'next/router'
+import { useRouter } from 'next/router'
 import { createContext, useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
-import UserModel from '../../model/UserModel'
-
+import LoginModel from '../../model/LoginModel'
 interface AuthContextProps {
-    user?: UserModel
+    user?: LoginModel
     loading?: boolean
     register?: (email: string, password: string) => Promise<void>
-    login?: (email: string, password: string) => Promise<void>
+    login?: (email: string, password: string, cb: any) => Promise<void>
     logout?: () => Promise<void>
 }
 
@@ -25,58 +24,56 @@ function cookieManager(logged: boolean) {
 }
 
 export function AuthProvider(props) {
-    const [loading, setLoading] = useState(true)
-    const [user, setuser] = useState<UserModel>(null)
+    const [loading, setLoading] = useState(false)
+    const [user, setUser] = useState<LoginModel>(null)
 
-    async function setSession(userSession) {
-        const user = {
-            uid: '12213213',
-            name: 'Fabio Dias',
-            email: 'mfabiodias@gmail.com',
-            image: null
-        }
-        
-        if (userSession?.email) {
-            setuser(user)
+    const router = useRouter()
+
+    function setSession(userLogged) {
+        if (userLogged?.email) {
+            setUser(userLogged)
             cookieManager(true)
             setLoading(false)
-            return user.email
         } else {
-            setuser(null)
+            setUser(null)
             cookieManager(false)
             setLoading(false)
-            return false
         }
     }
 
-    async function login(email, password) {
-        console.log('login')
-        await setSession({email, password})
-        route.push('/')
-        // setLoading(true)
+    async function login(email, password, cb) {
+        setLoading(true)
+
+        const response = await fetch('/api/login', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+            method: "POST",
+            body: JSON.stringify({ email, password })
+        });
+        const userLogged = await response.json();
+
+        setLoading(false);
+
+        setSession(userLogged?.user);
+        
+        if(userLogged?.status) router.push('/');
+        else cb(userLogged.message)
     }
 
     async function register(email, password) {
         console.log('register')
-        await setSession({email, password})
-        route.push('/')
+        setSession(null)
+        router.push('/')
         // setLoading(true)
     }
 
     async function logout() {
         console.log('sair')
-        await setSession(null)
+        setSession(null)
         // setLoading(true)
     }
-
-    useEffect(() => {
-        // if(Cookies.get('admin-auth')) {
-        //     const cancelar = firebase.auth().onIdTokenChanged(setSession)
-        //     return () => cancelar()
-        // } else {
-        // }
-        setLoading(false)
-    }, [])
 
     return (
         <AuthContext.Provider value={{
@@ -84,12 +81,11 @@ export function AuthProvider(props) {
             loading,
             login,
             register,
-            logout
+            logout,
         }}>
             {props.children}
         </AuthContext.Provider>
     )
 }
-
-
+  
 export default AuthContext

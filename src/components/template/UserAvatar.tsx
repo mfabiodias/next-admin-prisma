@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import router from 'next/router'
+import { useRouter } from 'next/router'
 import useAuth from '../../data/hook/useAuth'
 
 interface UserAvatarProps {
@@ -8,6 +8,7 @@ interface UserAvatarProps {
 
 export default function UserAvatar(props: UserAvatarProps) {
     const { user } = useAuth()
+    const router = useRouter()
 
     function goToProfile() {
         router.push('/perfil')

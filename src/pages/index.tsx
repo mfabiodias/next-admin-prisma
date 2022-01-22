@@ -1,7 +1,7 @@
 import Layout from '../components/template/Layout'
 import Title from '../components/template/Title'
 
-export default function Home() {
+export default function Home(props) {
 
   return (
     <Layout>

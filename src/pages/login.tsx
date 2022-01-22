@@ -3,6 +3,7 @@ import InputAuth from "../components/auth/InputAuth"
 import { IconCaution } from "../components/icons"
 import useAuth from "../data/hook/useAuth"
 import SYSADM from '../config'
+import Image from "next/image"
 
 export default function Login() {
 
@@ -27,7 +28,9 @@ export default function Login() {
                 exibirErro('Informe a senha')
             } else {
                 if (mode === 'login') {
-                    await login(email, password)
+                    await login(email, password, setErro)
+                    if(erro)  exibirErro(erro)
+                    
                 } else {
                     if(password === confirmPassword) {
                         await register(email, password)
@@ -37,17 +40,14 @@ export default function Login() {
                 }
             }
         } catch(e) {
-            exibirErro(e?.message ?? 'Erro desconhecido!')
+            // exibirErro(e?.message ?? 'Erro desconhecido!')
         }
     }
 
     return (
         <div className="flex h-screen items-center justify-center">
             {SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 1 ? null : <div className="hidden md:block md:w-1/2 lg:w-3/5">
-                <img 
-                    src="https://source.unsplash.com/random"
-                    alt="Imagem da Tela de Autenticação"
-                    className="h-screen w-full object-cover" />
+                <Image src="https://source.unsplash.com/random" layout="fill" />
             </div>}
             <div className={`m-10 ${SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 1 ? "w-full sm:w-3/5 lg:w-1/3" : "w-full md:w-1/2 lg:w-2/5"}`}>
                 <h1 className={`text-3xl font-bold mb-5`}>

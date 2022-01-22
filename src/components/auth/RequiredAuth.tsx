@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import router from 'next/router'
+import router, { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import loadingImage from '../../../public/images/loading.gif'
 import useAuth from '../../data/hook/useAuth'
 
@@ -42,7 +43,7 @@ export default function RequiredAuth(props) {
     } else if(loading) {
         return renderizarCarregando()
     } else {
-        router.push('/login')
+        if(typeof window !== 'undefined') router.push('/login')
         return null
     }
 }
