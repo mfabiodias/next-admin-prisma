@@ -15,7 +15,7 @@ export default function UserAvatar(props: UserAvatarProps) {
     }
 
     return (
-        <Image src={user?.image ?? '/images/avatar.svg'} width="40" height="40" 
+        <Image src={user?.image ?? '/images/avatar.svg'} width="40" height="40" alt="avatar"
             className={`
                 rounded-full cursor-pointer mx-10
                 dark:text-gray-200 ${props.className}

@@ -21,7 +21,7 @@ export default function Logo() {
         //     {/* {IconLogo()} */}
 
         //     {/* Com file PNG/JPG/GIF */}
-        //     {/* <Image src={iconLogoPNG} width="32" height="32" /> */}
+        //     {/* <Image src={iconLogoPNG} width="32" height="32" c/> */}
         // </div>
     )
 }
