@@ -1,0 +1,12 @@
+# REQUIRE VS Code plugin REST Client (Huachao Mao)
+
+@API_URL = http://localhost:3000/api
+
+POST  {{API_URL}}/login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "mfabiodias@gmail.com",
+    "password": "123456"
+}
