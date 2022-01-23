@@ -6,7 +6,7 @@ interface AuthContextProps {
     user?: LoginModel
     loading?: boolean
     register?: (email: string, password: string) => Promise<void>
-    login?: (email: string, password: string, cb: any) => Promise<void>
+    login?: (email: string, password: string) => Promise<any>
     logout?: () => Promise<void>
 }
 
@@ -33,15 +33,13 @@ export function AuthProvider(props) {
         if (userLogged?.email) {
             setUser(userLogged)
             cookieManager(true)
-            setLoading(false)
         } else {
             setUser(null)
             cookieManager(false)
-            setLoading(false)
         }
     }
 
-    async function login(email, password, cb) {
+    async function login(email, password) {
         setLoading(true)
 
         const response = await fetch('/api/login', {
@@ -54,12 +52,16 @@ export function AuthProvider(props) {
         });
         const userLogged = await response.json();
 
-        setLoading(false);
-
         setSession(userLogged?.user);
         
-        if(userLogged?.status) router.push('/');
-        else cb(userLogged.message)
+        setLoading(false);
+        
+        if(userLogged?.status) {
+            router.push('/');
+            return;
+        } 
+
+        return userLogged.message;
     }
 
     async function register(email, password) {

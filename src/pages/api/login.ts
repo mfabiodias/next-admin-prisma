@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   if (req.method !== 'POST') {
-    res.status(405).send({
+    res.status(405).json({
       status: false,
       message: 'Somente requisições POST são permitidas.',
     });
@@ -20,12 +20,12 @@ export default async function handle(req, res) {
   if (!user?.email) {
     res
       .status(200)
-      .send({ status: false, message: 'Usuário não cadastrado no sistema!' });
+      .json({ status: false, message: 'Usuário não cadastrado no sistema!' });
     return;
   }
 
   if (user.password != password) {
-    res.status(200).send({ status: false, message: 'Senha inválida!' });
+    res.status(200).json({ status: false, message: 'Senha inválida!' });
     return;
   }
 
@@ -34,6 +34,6 @@ export default async function handle(req, res) {
 
   res
     .status(200)
-    .send({ status: true, message: 'Logado com sucecsso!', user: user });
+    .json({ status: true, message: 'Logado com sucecsso!', user: user });
   return;
 }

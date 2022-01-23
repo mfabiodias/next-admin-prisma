@@ -1,11 +1,11 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import InputAuth from "../components/auth/InputAuth"
 import { IconCaution } from "../components/icons"
 import useAuth from "../data/hook/useAuth"
 import SYSADM from '../config'
 import Image from "next/image"
 
-export default function Login() {
+export default function Login(props) {
 
     const { register, login } = useAuth()
 
@@ -15,27 +15,31 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
-    function exibirErro(msg, tempoEmSegundos = 5) {
-        setErro(msg)
-        setTimeout(() => setErro(null), tempoEmSegundos * 1000)
+    async function exibirErro(msg, errorSecondTime = 2) {
+        setErro(msg);
+        await timeout(errorSecondTime * 1000);
+        setErro(null);
+    }
+
+    function timeout (ms) {
+        return new Promise(res => setTimeout(res,ms));
     }
 
     async function submeter() {
         try {
             if(!email.trim().length) {
-                exibirErro('Informe o email')
+                await exibirErro('Informe o email')
             } else if(!password.trim().length) {
-                exibirErro('Informe a senha')
+                await exibirErro('Informe a senha')
             } else {
                 if (mode === 'login') {
-                    await login(email, password, setErro)
-                    if(erro)  exibirErro(erro)
-                    
+                    const isLoginFail = await login(email, password)
+                    if(!!isLoginFail)  await exibirErro(isLoginFail)
                 } else {
                     if(password === confirmPassword) {
                         await register(email, password)
                     } else {
-                        exibirErro('Senhas não conferem')
+                        await exibirErro('Senhas não conferem')
                     }
                 }
             }
@@ -47,7 +51,7 @@ export default function Login() {
     return (
         <div className="flex h-screen items-center justify-center">
             {SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 1 ? null : <div className="hidden md:block md:w-1/2 lg:w-3/5">
-                <Image src="https://source.unsplash.com/random" layout="fill" />
+                <Image src="https://source.unsplash.com/random" layout="fill" alt="backgroud image" />
             </div>}
             <div className={`m-10 ${SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 1 ? "w-full sm:w-3/5 lg:w-1/3" : "w-full md:w-1/2 lg:w-2/5"}`}>
                 <h1 className={`text-3xl font-bold mb-5`}>
