@@ -9,13 +9,30 @@
 
 ### ABOUT
 
-- Admin template básico, com responsividade, Login (user/pass) e Social Login do Google com o Firebase.
-- Sistema desenvolvido com as tecnologias, ReacJS, NextJS, Firebase e TailwindCSS.
+- Admin template básico, com responsividade e Login (user/pass) com ORM PrismaJS.
+- Sistema desenvolvido com as tecnologias, ReacJS, NextJS, PrismaJS e TailwindCSS.
 
 ### CONFIGS
 
-- No arquivo .env configure os dados do seu banco de dados
+- No arquivo .env configure os dados do seu banco de dados e seed do usuário ADMIN
 - No arquivo de config (src/config/index.js) você opde ajustar as configs da empresa
+- prisma/schema.prisma
+
+### Prisma SETUP
+
+- npm install prisma --save-dev
+- Inicio o prisma em seu projeto (npx prisma init)
+- set seu database no arquivo prisma/schema.prisma
+- Se estiver utilizando o prisma em um projeto existente, pode mapear as tabelas com o INTROSPECTION (npx prisma db pull)
+- Instale o prisma client (npm install @prisma/client)
+- Gere os schemas com o prisma para acesso ao seu BD (npx prisma generate)
+
+### Criando suas migration
+
+- npx prisma migrate dev ( Crias as migrations)
+- npx prisma migrate reset (Reinicias as migrations)
+
+### Criando suas seeds
 
 - npx prisma db seed --preview-feature
 
@@ -41,8 +58,10 @@ If you are using ESM (ECMAScript modules):
 
 4. tsconfig.json set "isolatedModules": false,
 
-npx prisma
+5. Crie seu arquivo seed. (Exe.: https://github.com/prisma/prisma-examples/blob/latest/typescript/graphql/prisma/seed.ts)
 
-npx prisma migrate reset
-npx prisma studio
-npx prisma db seed
+6. npx prisma db seed
+
+### Gerenciando seu banco de dados com o Prisma Studio
+
+- npx prisma studio
