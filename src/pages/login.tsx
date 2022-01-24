@@ -16,7 +16,7 @@ export default function Login(props) {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
-    async function showError(msg, errorSecondTime = 2) {
+    async function showError(msg, errorSecondTime = 3) {
         setError(msg);
         await sleep(errorSecondTime * 1000);
         setError(null);
@@ -60,7 +60,7 @@ export default function Login(props) {
             </div> : null}
             <div className={`m-10 ${SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 2 ? "w-full md:w-1/2 lg:w-2/5" : "w-full sm:w-3/5 lg:w-1/3"}`}>
                 <h1 className={`text-3xl font-bold mb-5`}>
-                    {mode === 'login' ? 'Entre com a Sua Conta' : 'Cadastre-se na Plataforma'}
+                    {mode === 'login' ? 'Entre com a sua conta' : 'Cadastre-se na plataforma'}
                 </h1>
 
                 {error ? (
@@ -110,11 +110,11 @@ export default function Login(props) {
                         <hr className="my-6 border-gray-300 w-full" />
                         {mode === 'register' ? (
                             <p className="mt-8">
-                                Já faz parte da nossa comunidade?
+                                Já tem um cadastro?
                                 <a onClick={() => setMode('login')} className={`
                                     text-blue-500 hover:text-blue-700 font-semibold
                                     cursor-pointer
-                                `}> Entre com a suas Credenciais</a>
+                                `}> Entre com a suas credenciais</a>
                             </p>
                         ) : (
                             <p className="mt-8">
