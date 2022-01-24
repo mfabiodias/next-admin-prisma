@@ -4,6 +4,7 @@ export default Object.freeze({
   ADMIN: {
     LOGIN_PAGE_LAYOUT: 2, // Options: 1 (Simple Layout) ou 2 (Half Layout -> Image/Form)
     REGISTER_ENABLE: true, // Habilita o cadastro de novos usuários
+    DEFAULT_THEME: 'dark', // Claro ('') e Escuro ('dark')
   },
   BUSSINESS: {
     NAME: 'COD3R.COM.BR',
