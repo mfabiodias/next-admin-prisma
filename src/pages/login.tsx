@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
+import Image from "next/image"
 import InputAuth from "../components/auth/InputAuth"
 import { IconCaution } from "../components/icons"
 import useAuth from "../data/hook/useAuth"
 import SYSADM from '../config'
-import Image from "next/image"
+import { sleep } from '../functions'
 
 export default function Login(props) {
 
@@ -17,12 +18,8 @@ export default function Login(props) {
 
     async function exibirErro(msg, errorSecondTime = 2) {
         setErro(msg);
-        await timeout(errorSecondTime * 1000);
+        await sleep(errorSecondTime * 1000);
         setErro(null);
-    }
-
-    function timeout (ms) {
-        return new Promise(res => setTimeout(res,ms));
     }
 
     async function submeter() {
