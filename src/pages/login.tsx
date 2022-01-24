@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from "react"
 import InputAuth from "../components/auth/InputAuth"
 import { IconCaution } from "../components/icons"
@@ -37,12 +38,13 @@ export default function Login(props) {
 
             if (mode === 'login') {
                 const isLoginFail = await login(email, password)
-                if(!!isLoginFail)  return await showError(isLoginFail)
+                if(isLoginFail) return await showError(isLoginFail)
             } 
             
             if (mode === 'register') {
                 if(!samePass) return await showError('Senhas não conferem')
-                await register(email, password)
+                const isRegisterFail = await register(email, password)
+                if(isRegisterFail) return await showError(isRegisterFail)
             }
         } catch(e) {
             console.error(e?.message)

@@ -5,7 +5,7 @@ import LoginModel from '../../model/LoginModel'
 interface AuthContextProps {
     user?: LoginModel
     loading?: boolean
-    register?: (email: string, password: string) => Promise<void>
+    register?: (email: string, password: string) => Promise<any>
     login?: (email: string, password: string) => Promise<any>
     logout?: () => Promise<void>
 }
@@ -39,36 +39,39 @@ export function AuthProvider(props) {
         }
     }
 
-    async function login(email, password) {
+    async function postData(userData, endpoint, sucessPage="/") {
         setLoading(true)
 
-        const response = await fetch('/api/login', {
+        const response = await fetch(`/api/${endpoint}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-              },
+            },
             method: "POST",
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify(userData)
         });
-        const userLogged = await response.json();
+        const userReturnedData = await response.json();
 
-        setSession(userLogged?.user);
+        setSession(userReturnedData?.user);
         
         setLoading(false);
         
-        if(userLogged?.status) {
-            router.push('/');
+        if(userReturnedData?.status) {
+            router.push(sucessPage);
             return;
         } 
 
-        return userLogged.message;
+        return userReturnedData.message;
+    }
+
+    async function login(email, password) {
+        const userData = { email, password };
+        return await postData(userData, 'login')
     }
 
     async function register(email, password) {
-        console.log('register')
-        setSession(null)
-        router.push('/')
-        // setLoading(true)
+        const userData = { email, password };
+        return await postData(userData, 'register', '/perfil')
     }
 
     async function logout() {
