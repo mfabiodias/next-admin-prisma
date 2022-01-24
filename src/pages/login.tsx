@@ -11,16 +11,16 @@ export default function Login(props) {
 
     const { register, login } = useAuth()
 
-    const [erro, setErro] = useState(null)
+    const [error, setError] = useState(null)
     const [mode, setMode] = useState<'login' | 'register'>('login')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
     async function showError(msg, errorSecondTime = 2) {
-        setErro(msg);
+        setError(msg);
         await sleep(errorSecondTime * 1000);
-        setErro(null);
+        setError(null);
 
         return;
     }
@@ -61,14 +61,14 @@ export default function Login(props) {
                     {mode === 'login' ? 'Entre com a Sua Conta' : 'Cadastre-se na Plataforma'}
                 </h1>
 
-                {erro ? (
+                {error ? (
                     <div className={`
                         flex items-center
                         bg-red-400 text-white py-3 px-5 my-2
                         border border-red-700 rounded-lg
                     `}>
                         {IconCaution()}
-                        <span className="ml-3">{erro}</span>
+                        <span className="ml-3">{error}</span>
                     </div>
                 ) : false}
                 
