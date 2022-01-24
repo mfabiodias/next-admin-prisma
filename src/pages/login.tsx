@@ -5,6 +5,7 @@ import { IconCaution } from "../components/icons"
 import useAuth from "../data/hook/useAuth"
 import SYSADM from '../config'
 import { sleep } from '../functions'
+import { isEmail, isEmpty, isSame } from '../functions/validators'
 
 export default function Login(props) {
 
@@ -20,28 +21,31 @@ export default function Login(props) {
         setErro(msg);
         await sleep(errorSecondTime * 1000);
         setErro(null);
+
+        return;
     }
 
     async function submeter() {
         try {
-            if(!email.trim().length) {
-                await exibirErro('Informe o email')
-            } else if(!password.trim().length) {
-                await exibirErro('Informe a senha')
+            const emptyEmail = isEmpty(email)
+            const validEmail = isEmail(email)
+            const emptyPass = isEmpty(password)
+            const samePass = isSame(password, confirmPassword)
+
+            if(emptyEmail) return await exibirErro('Informe seu email')
+            if(!validEmail) return await exibirErro('Informe um email válido')
+            if(emptyPass) return await exibirErro('Informe sua senha')
+
+            if (mode === 'login') {
+                const isLoginFail = await login(email, password)
+                if(!!isLoginFail)  return await exibirErro(isLoginFail)
             } else {
-                if (mode === 'login') {
-                    const isLoginFail = await login(email, password)
-                    if(!!isLoginFail)  await exibirErro(isLoginFail)
-                } else {
-                    if(password === confirmPassword) {
-                        await register(email, password)
-                    } else {
-                        await exibirErro('Senhas não conferem')
-                    }
-                }
+                if(!samePass) await exibirErro('Senhas não conferem')
+                await register(email, password)
             }
         } catch(e) {
-            // exibirErro(e?.message ?? 'Erro desconhecido!')
+            console.error(e?.message)
+            return await exibirErro('Problemas com nossa base de dados. Tente novamente mais tarde!')
         }
     }
 
