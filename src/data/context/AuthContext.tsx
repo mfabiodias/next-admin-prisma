@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import { createContext, useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import LoginModel from '../../model/LoginModel'
@@ -27,10 +26,8 @@ export function AuthProvider(props) {
     const [loading, setLoading] = useState(false)
     const [user, setUser] = useState<LoginModel>(null)
 
-    const router = useRouter()
-
     function setSession(userLogged) {
-        if (userLogged?.email) {
+        if (!!userLogged?.enable) {
             setUser(userLogged)
             cookieManager(true)
         } else {
@@ -39,7 +36,7 @@ export function AuthProvider(props) {
         }
     }
 
-    async function postData(userData, endpoint, sucessPage="/") {
+    async function postData(userData, endpoint) {
         setLoading(true)
 
         const response = await fetch(`/api/${endpoint}`, {
@@ -50,28 +47,23 @@ export function AuthProvider(props) {
             method: "POST",
             body: JSON.stringify(userData)
         });
-        const userReturnedData = await response.json();
+        const responseData = await response.json();
 
-        setSession(userReturnedData?.user);
+        setSession(responseData?.user);
         
         setLoading(false);
         
-        if(userReturnedData?.status) {
-            router.push(sucessPage);
-            return;
-        } 
-
-        return userReturnedData.message;
+        return responseData;
     }
 
     async function login(email, password) {
         const userData = { email, password };
-        return await postData(userData, 'login')
+        return await postData(userData, 'login');
     }
 
     async function register(email, password) {
         const userData = { email, password };
-        return await postData(userData, 'register', '/perfil')
+        return await postData(userData, 'register');
     }
 
     async function logout() {

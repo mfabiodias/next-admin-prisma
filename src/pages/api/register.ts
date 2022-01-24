@@ -33,7 +33,7 @@ export default async function handle(req, res) {
       email,
       password: passwordGenerate(password),
       type: 'user',
-      enable: SYSVAR.ADMIN.REGISTER_ENABLE ? 1 : 0,
+      enable: SYSVAR.ADMIN.USER_DEFAULT_ENABLE ? 1 : 0,
     },
   });
 

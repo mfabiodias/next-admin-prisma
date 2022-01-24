@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
+import { useRouter } from 'next/router'
 import { useState, useEffect } from "react"
 import InputAuth from "../components/auth/InputAuth"
-import { IconCaution } from "../components/icons"
+import { IconCaution, IconSuccess } from "../components/icons"
 import useAuth from "../data/hook/useAuth"
 import { SYSVAR } from '../config'
 import { sleep } from '../functions'
@@ -9,18 +10,34 @@ import { isEmail, isEmpty, isSame } from '../functions/validators'
 
 export default function Login(props) {
 
+    const router = useRouter()
+
     const { register, login } = useAuth()
 
     const [error, setError] = useState(null)
+    const [success, setSuccess] = useState(null)
     const [mode, setMode] = useState<'login' | 'register'>('login')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
-    async function showError(msg, errorSecondTime = 3) {
+    async function showError(msg, secondTime = 3) {
+        setSuccess(null);
+        setEmail('');
+        setPassword('');
         setError(msg);
-        await sleep(errorSecondTime * 1000);
+        await sleep(secondTime * 1000);
         setError(null);
+
+        return;
+    }
+    
+    function showSuccess(msg) {
+        setError(null);
+        setSuccess(msg);
+        setMode('login');
+        setPassword('')
+        setConfirmPassword('')
 
         return;
     }
@@ -37,14 +54,21 @@ export default function Login(props) {
             if(emptyPass) return await showError('Informe sua senha')
 
             if (mode === 'login') {
-                const isLoginFail = await login(email, password)
-                if(isLoginFail) return await showError(isLoginFail)
+                const { status, message } = await login(email, password)
+                if(!status) return await showError(message)
+                
+                router.push('/');
+                return;
             } 
             
             if (mode === 'register') {
                 if(!samePass) return await showError('Senhas não conferem')
-                const isRegisterFail = await register(email, password)
-                if(isRegisterFail) return await showError(isRegisterFail)
+                const { status, message, user } = await register(email, password)
+                if(!status) return await showError(message)
+                if(!user.enable) return showSuccess(message) 
+
+                router.push('/perfil'); // autologin
+                return;
             }
         } catch(e) {
             console.error(e?.message)
@@ -73,6 +97,17 @@ export default function Login(props) {
                     `}>
                         {IconCaution()}
                         <span className="ml-3">{error}</span>
+                    </div>
+                ) : null}
+                
+                {success ? (
+                    <div className={`
+                        flex items-center
+                        bg-green-400 text-white py-3 px-5 my-2
+                        border border-green-700 rounded-lg
+                    `}>
+                        {IconSuccess()}
+                        <span className="ml-3">{success}</span>
                     </div>
                 ) : null}
                 
