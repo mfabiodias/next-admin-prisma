@@ -17,7 +17,7 @@ export default function Login(props) {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
-    async function exibirErro(msg, errorSecondTime = 2) {
+    async function showError(msg, errorSecondTime = 2) {
         setErro(msg);
         await sleep(errorSecondTime * 1000);
         setErro(null);
@@ -32,20 +32,22 @@ export default function Login(props) {
             const emptyPass = isEmpty(password)
             const samePass = isSame(password, confirmPassword)
 
-            if(emptyEmail) return await exibirErro('Informe seu email')
-            if(!validEmail) return await exibirErro('Informe um email válido')
-            if(emptyPass) return await exibirErro('Informe sua senha')
+            if(emptyEmail) return await showError('Informe seu email')
+            if(!validEmail) return await showError('Informe um email válido')
+            if(emptyPass) return await showError('Informe sua senha')
 
             if (mode === 'login') {
                 const isLoginFail = await login(email, password)
-                if(!!isLoginFail)  return await exibirErro(isLoginFail)
-            } else {
-                if(!samePass) await exibirErro('Senhas não conferem')
+                if(!!isLoginFail)  return await showError(isLoginFail)
+            } 
+            
+            if (mode === 'register') {
+                if(!samePass) return await showError('Senhas não conferem')
                 await register(email, password)
             }
         } catch(e) {
             console.error(e?.message)
-            return await exibirErro('Problemas com nossa base de dados. Tente novamente mais tarde!')
+            return await showError('Problemas com nossa base de dados. Tente novamente mais tarde!')
         }
     }
 
