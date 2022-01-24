@@ -7,26 +7,26 @@ export default async function handle(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({
       status: false,
-      message: 'Somente requisições POST são permitidas.',
+      message: 'Somente requisições POST são permitidas no login de usuário.',
     });
     return;
   }
 
   const { email, password } = req.body;
 
-  const user = await prisma.user.findFirst({
-    where: { email: email },
+  const user = await prisma.user.findUnique({
+    where: { email },
   });
 
   if (!user?.email) {
     res
-      .status(200)
+      .status(401)
       .json({ status: false, message: 'Usuário não cadastrado no sistema!' });
     return;
   }
 
   if (!isValidPasswordHash(password, user.password)) {
-    res.status(200).json({ status: false, message: 'Senha inválida!' });
+    res.status(401).json({ status: false, message: 'Senha inválida!' });
     return;
   }
 
