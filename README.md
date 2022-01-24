@@ -16,3 +16,27 @@
 
 - No arquivo .env configure os dados do seu banco de dados
 - No arquivo de config (src/config/index.js) você opde ajustar as configs da empresa
+
+- npx prisma db seed --preview-feature
+
+1. Open the package.json of your project
+2. Add the following example to it:
+
+```
+"prisma": {
+  "seed": "ts-node prisma/seed.ts"
+}
+```
+
+If you are using ESM (ECMAScript modules):
+
+```
+"prisma": {
+  "seed": "node --loader ts-node/esm prisma/seed.ts"
+}
+```
+
+3. Install the required dependencies by running:
+   npm i -D ts-node typescript @types/node
+
+4. tsconfig.json set "isolatedModules": false,
