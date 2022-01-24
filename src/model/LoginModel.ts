@@ -4,4 +4,5 @@ export default interface LoginModel {
   name: string;
   image: string;
   type: string;
+  enable: number;
 }

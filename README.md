@@ -40,3 +40,9 @@ If you are using ESM (ECMAScript modules):
    npm i -D ts-node typescript @types/node
 
 4. tsconfig.json set "isolatedModules": false,
+
+npx prisma
+
+npx prisma migrate reset
+npx prisma studio
+npx prisma db seed

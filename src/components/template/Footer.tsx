@@ -1,4 +1,4 @@
-import SYSADM from '../../config'
+import { SYSVAR } from '../../config'
 import Link from "next/link"
 
 export default function Footer() {
@@ -12,13 +12,13 @@ export default function Footer() {
             <div className={`flex items-center justify-center text-sm
                 text-center w-full dark:text-gray-200 py-1
             `}>
-                {SYSADM.BUSSINESS.ALL_RIGHT}
+                {SYSVAR.BUSSINESS.ALL_RIGHT}
             </div>
             <div className={`flex items-center justify-center text-xs
                 text-center w-full dark:text-gray-200 py-1
                 `}>
-                <Link href={SYSADM.DEV.SITE}>
-                    <a target="_blank">{`Developer ${SYSADM.DEV.NAME}`}</a>
+                <Link href={SYSVAR.DEV.SITE}>
+                    <a target="_blank">{`Developer ${SYSVAR.DEV.NAME}`}</a>
                 </Link>
             </div>
         </aside>

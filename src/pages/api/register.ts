@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { passwordGenerate } from '../../functions';
+import { SYSVAR } from '../../config';
 
 const prisma = new PrismaClient();
 
@@ -32,6 +33,7 @@ export default async function handle(req, res) {
       email,
       password: passwordGenerate(password),
       type: 'user',
+      enable: SYSVAR.ADMIN.REGISTER_ENABLE ? 1 : 0,
     },
   });
 

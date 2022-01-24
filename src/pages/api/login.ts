@@ -25,6 +25,14 @@ export default async function handle(req, res) {
     return;
   }
 
+  if (!user.enable) {
+    res.status(401).json({
+      status: false,
+      message: 'Conta inativa. Contate o administrador para ativar sua conta.',
+    });
+    return;
+  }
+
   if (!isValidPasswordHash(password, user.password)) {
     res.status(401).json({ status: false, message: 'Senha inválida!' });
     return;

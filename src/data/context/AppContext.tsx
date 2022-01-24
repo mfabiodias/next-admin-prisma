@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import useWindowDimensions from '../hook/useWindowDimensions';
-import SYSADM from '../../config'
+import { SYSVAR } from '../../config'
   
 
 // type Theme = 'dark' | ''
@@ -20,7 +20,7 @@ export function AppProvider(props) {
     const { width } = useWindowDimensions(); //  width <= 768 (MD)
     const [mobileMenu, setMobileMenu] = useState(width <= 768)
     const [sidebarMenu, setSidebarMenu] = useState(false)
-    const [theme, setTheme] = useState(SYSADM.ADMIN.DEFAULT_THEME)
+    const [theme, setTheme] = useState(SYSVAR.ADMIN.DEFAULT_THEME)
 
     
     
@@ -39,7 +39,7 @@ export function AppProvider(props) {
     }, [width])
 
     useEffect(() => {
-        const saveTheme = localStorage.getItem('theme') || SYSADM.ADMIN.DEFAULT_THEME
+        const saveTheme = localStorage.getItem('theme') || SYSVAR.ADMIN.DEFAULT_THEME
         setTheme(saveTheme)
     }, [])
 

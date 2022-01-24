@@ -4,7 +4,7 @@ import ChangeTheme from './ChangeTheme'
 import useAppData from '../../data/hook/useAppData'
 import UserAvatar from './UserAvatar'
 import { IconMenu } from '../icons'
-import SYSADM from '../../config'
+import { SYSVAR } from '../../config'
 
 export default function Header(props) {
     const { theme, changeTheme, mobileMenu, sidebarMenu, toggleSidebarMenu } = useAppData()
@@ -21,7 +21,7 @@ export default function Header(props) {
                 </span>
             </div> }
             <div className={`flex items-center font-semibold text-2xl pl-4`}>
-                {SYSADM.BUSSINESS.NAME}
+                {SYSVAR.BUSSINESS.NAME}
             </div>
             <div className={`flex flex-grow justify-end items-center pr-4 `}>
                 <ChangeTheme theme={theme} changeTheme={changeTheme} />

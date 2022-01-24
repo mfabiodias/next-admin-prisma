@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import InputAuth from "../components/auth/InputAuth"
 import { IconCaution } from "../components/icons"
 import useAuth from "../data/hook/useAuth"
-import SYSADM from '../config'
+import { SYSVAR } from '../config'
 import { sleep } from '../functions'
 import { isEmail, isEmpty, isSame } from '../functions/validators'
 
@@ -54,13 +54,13 @@ export default function Login(props) {
 
     return (
         <div className="flex h-screen items-center justify-center">
-            {SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 2 ? <div className="hidden md:block md:w-1/2 lg:w-3/5">
+            {SYSVAR.ADMIN.LOGIN_PAGE_LAYOUT == 2 ? <div className="hidden md:block md:w-1/2 lg:w-3/5">
                 <img 
                     src="https://source.unsplash.com/random"
                     alt="Imagem de Autenticação"
                     className="h-screen w-full object-cover" />
             </div> : null}
-            <div className={`m-10 ${SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 2 ? "w-full md:w-1/2 lg:w-2/5" : "w-full sm:w-3/5 lg:w-1/3"}`}>
+            <div className={`m-10 ${SYSVAR.ADMIN.LOGIN_PAGE_LAYOUT == 2 ? "w-full md:w-1/2 lg:w-2/5" : "w-full sm:w-3/5 lg:w-1/3"}`}>
                 <h1 className={`text-3xl font-bold mb-5`}>
                     {mode === 'login' ? 'Entre com a sua conta' : 'Cadastre-se na plataforma'}
                 </h1>
@@ -107,7 +107,7 @@ export default function Login(props) {
                 </button>
 
 
-                {SYSADM.ADMIN.REGISTER_ENABLE ?
+                {SYSVAR.ADMIN.REGISTER_ENABLE ?
                     <>
                         <hr className="my-6 border-gray-300 w-full" />
                         {mode === 'register' ? (

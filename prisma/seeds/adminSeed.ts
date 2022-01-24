@@ -5,4 +5,5 @@ module.exports.AdminSeed = Object.freeze({
   email: process.env.USER_ADMIN_EMAIL,
   password: passwordHash.generate(process.env.USER_ADMIN_PASSWORD),
   type: 'admin',
+  enable: 1,
 });

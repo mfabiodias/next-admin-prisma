@@ -6,6 +6,7 @@ CREATE TABLE `User` (
     `password` VARCHAR(255) NOT NULL,
     `image` VARCHAR(255) NULL,
     `type` ENUM('admin', 'monitor', 'user') NOT NULL,
+    `enable` INTEGER NOT NULL,
 
     UNIQUE INDEX `email`(`email`),
     PRIMARY KEY (`id`)
