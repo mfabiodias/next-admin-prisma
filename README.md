@@ -56,7 +56,14 @@ If you are using ESM (ECMAScript modules):
 3. Install the required dependencies by running:
    npm i -D ts-node typescript @types/node
 
-4. tsconfig.json set "isolatedModules": false,
+4. tsconfig.json set "isolatedModules": false
+
+```
+PS: Caso o babel set automaticamente como TRUE, vc pode alterar para rodar seu seed.
+
+The following mandatory changes were made to your tsconfig.json:
+  - isolatedModules was set to true (requirement for babel)
+```
 
 5. Crie seu arquivo seed. (Exe.: https://github.com/prisma/prisma-examples/blob/latest/typescript/graphql/prisma/seed.ts)
 
