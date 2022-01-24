@@ -53,10 +53,10 @@ export default function Login(props) {
 
     return (
         <div className="flex h-screen items-center justify-center">
-            {SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 1 ? null : <div className="hidden md:block md:w-1/2 lg:w-3/5">
+            {SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 2 ? <div className="hidden md:block md:w-1/2 lg:w-3/5">
                 <Image src="https://source.unsplash.com/random" layout="fill" alt="backgroud image" />
-            </div>}
-            <div className={`m-10 ${SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 1 ? "w-full sm:w-3/5 lg:w-1/3" : "w-full md:w-1/2 lg:w-2/5"}`}>
+            </div> : null}
+            <div className={`m-10 ${SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 2 ? "w-full md:w-1/2 lg:w-2/5" : "w-full sm:w-3/5 lg:w-1/3"}`}>
                 <h1 className={`text-3xl font-bold mb-5`}>
                     {mode === 'login' ? 'Entre com a Sua Conta' : 'Cadastre-se na Plataforma'}
                 </h1>
@@ -70,7 +70,7 @@ export default function Login(props) {
                         {IconCaution()}
                         <span className="ml-3">{error}</span>
                     </div>
-                ) : false}
+                ) : null}
                 
                 <InputAuth
                     label="Email"
@@ -103,7 +103,7 @@ export default function Login(props) {
                 </button>
 
 
-                {!SYSADM.ADMIN.REGISTER_ENABLE ? null : 
+                {SYSADM.ADMIN.REGISTER_ENABLE ?
                     <>
                         <hr className="my-6 border-gray-300 w-full" />
                         {mode === 'register' ? (
@@ -124,7 +124,7 @@ export default function Login(props) {
                             </p>
                         )}
                     </>
-                }
+                : null}
             </div>
         </div>
     )
