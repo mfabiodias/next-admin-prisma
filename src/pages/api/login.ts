@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { isValidPasswordHash } from '../../functions/validators';
 
 const prisma = new PrismaClient();
 
@@ -24,13 +25,12 @@ export default async function handle(req, res) {
     return;
   }
 
-  if (user.password != password) {
+  if (!isValidPasswordHash(password, user.password)) {
     res.status(200).json({ status: false, message: 'Senha inválida!' });
     return;
   }
 
   delete user.password;
-  user['image'] = null;
 
   res
     .status(200)

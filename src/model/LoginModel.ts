@@ -3,4 +3,5 @@ export default interface LoginModel {
   email: string;
   name: string;
   image: string;
+  type: string;
 }

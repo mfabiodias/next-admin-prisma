@@ -72,9 +72,7 @@ export function AuthProvider(props) {
     }
 
     async function logout() {
-        console.log('sair')
         setSession(null)
-        // setLoading(true)
     }
 
     return (
