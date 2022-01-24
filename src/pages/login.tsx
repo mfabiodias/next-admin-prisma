@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import InputAuth from "../components/auth/InputAuth"
 import { IconCaution } from "../components/icons"
 import useAuth from "../data/hook/useAuth"
@@ -54,7 +53,10 @@ export default function Login(props) {
     return (
         <div className="flex h-screen items-center justify-center">
             {SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 2 ? <div className="hidden md:block md:w-1/2 lg:w-3/5">
-                <Image src="https://source.unsplash.com/random" layout="fill" alt="backgroud image" />
+                <img 
+                    src="https://source.unsplash.com/random"
+                    alt="Imagem de Autenticação"
+                    className="h-screen w-full object-cover" />
             </div> : null}
             <div className={`m-10 ${SYSADM.ADMIN.LOGIN_PAGE_LAYOUT == 2 ? "w-full md:w-1/2 lg:w-2/5" : "w-full sm:w-3/5 lg:w-1/3"}`}>
                 <h1 className={`text-3xl font-bold mb-5`}>
