@@ -6,7 +6,7 @@ import { IconCaution, IconSuccess } from "../components/icons"
 import useAuth from "../data/hook/useAuth"
 import { SYSVAR } from '../config'
 import { sleep } from '../functions'
-import { isEmail, isEmpty, isSame } from '../functions/validators'
+import { isEmail, isEmpty, isSame, isLengthMin, isLengthMax } from '../functions/validators'
 
 export default function Login(props) {
 
@@ -23,8 +23,7 @@ export default function Login(props) {
 
     async function showError(msg, secondTime = 3) {
         setSuccess(null);
-        setEmail('');
-        setPassword('');
+        setConfirmPassword('');
         setError(msg);
         await sleep(secondTime * 1000);
         setError(null);
@@ -48,6 +47,11 @@ export default function Login(props) {
             const validEmail = isEmail(email)
             const emptyPass = isEmpty(password)
             const samePass = isSame(password, confirmPassword)
+            
+            const passwordSize = { min: 6, max: 10 }
+
+            const minPass = isLengthMin(password, passwordSize.min);
+            const maxPass = isLengthMax(password, passwordSize.max);
 
             if(emptyEmail) return await showError('Informe seu email')
             if(!validEmail) return await showError('Informe um email válido')
@@ -63,6 +67,9 @@ export default function Login(props) {
             
             if (mode === 'register') {
                 if(!samePass) return await showError('Senhas não conferem')
+                if(!minPass) return await showError(`Senhas deve conter no mínimo ${passwordSize.min} caracteres.`)
+                if(!maxPass) return await showError(`Senhas deve conter no máximo ${passwordSize.max} caracteres.`)
+
                 const { status, message, user } = await register(email, password)
                 if(!status) return await showError(message)
                 if(!user.enable) return showSuccess(message) 
