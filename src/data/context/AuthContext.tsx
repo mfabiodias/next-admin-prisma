@@ -36,7 +36,7 @@ export function AuthProvider(props) {
         }
     }
 
-    async function postData(userData, endpoint) {
+    async function postData(userInputData, endpoint) {
         setLoading(true)
 
         const response = await fetch(`/api/${endpoint}`, {
@@ -45,7 +45,7 @@ export function AuthProvider(props) {
                 'Content-Type': 'application/json'
             },
             method: "POST",
-            body: JSON.stringify(userData)
+            body: JSON.stringify(userInputData)
         });
         const responseData = await response.json();
 
@@ -57,13 +57,13 @@ export function AuthProvider(props) {
     }
 
     async function login(email, password) {
-        const userData = { email, password };
-        return await postData(userData, 'login');
+        const userInputData = { email, password };
+        return await postData(userInputData, 'login');
     }
 
     async function register(email, password) {
-        const userData = { email, password };
-        return await postData(userData, 'register');
+        const userInputData = { email, password };
+        return await postData(userInputData, 'register');
     }
 
     async function logout() {
