@@ -27,12 +27,12 @@
 - Instale o prisma client (npm install @prisma/client)
 - Gere os schemas com o prisma para acesso ao seu BD (npx prisma generate)
 
-### Criando suas migration
+### Criando as migrations
 
 - npx prisma migrate dev ( Crias as migrations)
 - npx prisma migrate reset (Reinicias as migrations)
 
-### Criando suas seeds
+### Criando as seeds
 
 - npx prisma db seed --preview-feature
 
