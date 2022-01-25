@@ -2,10 +2,10 @@
 
 import passwordHash from 'password-hash';
 
-export function sleep(ms) {
+export function sleep(ms: number): Promise<void> {
   return new Promise(res => setTimeout(res, ms));
 }
 
-export function passwordGenerate(str) {
+export function passwordGenerate(str): string {
   return passwordHash.generate(str);
 }
