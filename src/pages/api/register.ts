@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { passwordGenerate } from '../../functions';
+import { passwordGenerate, ucwords } from '../../functions';
 import { SYSVAR } from '../../config';
 
 const prisma = new PrismaClient();
@@ -30,8 +30,8 @@ export default async function handle(req, res) {
 
   const registeredUser = await prisma.user.create({
     data: {
-      name,
-      email,
+      name: ucwords(name),
+      email: email.toLowerCase(),
       password: passwordGenerate(password),
       type: 'user',
       enable: SYSVAR.ADMIN.USER_DEFAULT_ENABLE ? 1 : 0,
