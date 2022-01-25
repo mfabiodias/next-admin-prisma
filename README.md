@@ -72,3 +72,21 @@ The following mandatory changes were made to your tsconfig.json:
 ### Gerenciando seu banco de dados com o Prisma Studio
 
 - npx prisma studio
+
+### Modificando sua base de dados
+
+1. set o provider em prisma/schema.prisma
+2. Adicione o DATABASE_URL no ENV
+3. Exclua as migrations de outros bancos de dados ou renomei-os
+4. Gere os schemas (npx prisma generate)
+5. tsconfig.json set "isolatedModules": false
+6. Crie as migrations (npx prisma migrate dev --name init)
+7. prisma migrate reset (Limpa os dados da Base, e sobe os SEEDs)
+
+```
+Database Options:
+1. sqlserver - tested
+2. postgresql - tested
+3. mysql - tested
+4. mongodb
+```
