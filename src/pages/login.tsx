@@ -17,6 +17,7 @@ export default function Login(props) {
     const [error, setError] = useState(null)
     const [success, setSuccess] = useState(null)
     const [mode, setMode] = useState<'login' | 'register'>('login')
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -41,42 +42,56 @@ export default function Login(props) {
         return;
     }
 
-    async function submeter() {
-        try {
-            const emptyEmail = isEmpty(email)
-            const validEmail = isEmail(email)
-            const emptyPass = isEmpty(password)
-            const samePass = isSame(password, confirmPassword)
-            
-            const passwordSize = { min: 6, max: 10 }
+    async function validateForm() {
+        if(isEmpty(email)) return await showError('Informe seu email');
+        if(!isEmail(email)) return await showError('Informe um email válido');
+        if(isEmpty(password)) return await showError('Informe sua senha');
 
-            const minPass = isLengthMin(password, passwordSize.min);
-            const maxPass = isLengthMax(password, passwordSize.max);
+        return true;
+    }
 
-            if(emptyEmail) return await showError('Informe seu email')
-            if(!validEmail) return await showError('Informe um email válido')
-            if(emptyPass) return await showError('Informe sua senha')
+    async function validateRegister() {
+        if(!await validateForm()) return;
 
-            if (mode === 'login') {
-                const { status, message } = await login(email, password)
-                if(!status) return await showError(message)
+        if(isEmpty(name)) return await showError('Informe seu nome');
                 
-                router.push('/');
-                return;
-            } 
-            
-            if (mode === 'register') {
-                if(!samePass) return await showError('Senhas não conferem')
-                if(!minPass) return await showError(`Senhas deve conter no mínimo ${passwordSize.min} caracteres.`)
-                if(!maxPass) return await showError(`Senhas deve conter no máximo ${passwordSize.max} caracteres.`)
+        const nameSize = { min: 5, max: 100 };
+        if(!isLengthMin(name, nameSize.min)) return await showError(`Nome deve conter no mínimo ${nameSize.min} caracteres.`);
+        if(!isLengthMax(name, nameSize.max)) return await showError(`Nome deve conter no máximo ${nameSize.max} caracteres.`);
+        
+        if(!isSame(password, confirmPassword)) return await showError('Senhas não conferem');
+        
+        const passwordSize = { min: 6, max: 10 };
+        if(!isLengthMin(password, passwordSize.min)) return await showError(`Senhas deve conter no mínimo ${passwordSize.min} caracteres.`);
+        if(!isLengthMax(password, passwordSize.max)) return await showError(`Senhas deve conter no máximo ${passwordSize.max} caracteres.`);
 
-                const { status, message, user } = await register(email, password)
-                if(!status) return await showError(message)
-                if(!user.enable) return showSuccess(message) 
+        return true;
+    }
 
-                router.push('/perfil'); // autologin
-                return;
-            }
+    async function submitLogin() {
+        if(!await validateForm()) return;
+
+        const { status, message } = await login(email, password)
+        if(!status) return await showError(message)
+        
+        router.push('/');
+        return;
+    }
+
+    async function submitRegister() {
+        if(!await validateRegister()) return;
+
+        const { status, message, user } = await register(name, email, password);
+        if(!status) return await showError(message);
+        if(!user.enable) return showSuccess(message) ;
+
+        router.push('/perfil'); 
+        return;
+    }
+
+    async function submitForm() {
+        try {
+            return mode === 'register' ? await submitRegister() : await submitLogin();
         } catch(e) {
             console.error(e?.message)
             return await showError('Problemas com nossa base de dados. Tente novamente mais tarde!')
@@ -119,29 +134,37 @@ export default function Login(props) {
                 ) : null}
                 
                 <InputAuth
+                    label="Nome"
+                    type="text"
+                    value={name}
+                    changedValue={setName}
+                    required
+                    notRender={mode === 'login'}
+                /> 
+                <InputAuth
                     label="Email"
                     type="email"
                     value={email}
                     changedValue={setEmail}
                     required
                 />
-                <InputAuth
+                <InputAuth 
                     label="Senha"
                     type="password"
                     value={password}
                     changedValue={setPassword}
                     required
                 />
-                {mode === 'register' ? 
                 <InputAuth
                     label="Confirmar Senha"
                     type="password"
                     value={confirmPassword}
                     changedValue={setConfirmPassword}
                     required
-                /> : null}
+                    notRender={mode === 'login'}
+                /> 
 
-                <button onClick={submeter} className={`
+                <button onClick={submitForm} className={`
                     w-full bg-indigo-500 hover:bg-indigo-400
                     text-white rounded-lg px-4 py-3 mt-6
                 `}>

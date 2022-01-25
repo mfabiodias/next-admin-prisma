@@ -14,7 +14,7 @@ export default async function handle(req, res) {
     return;
   }
 
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
 
   const user = await prisma.user.findUnique({
     where: { email },
@@ -30,6 +30,7 @@ export default async function handle(req, res) {
 
   const registeredUser = await prisma.user.create({
     data: {
+      name,
       email,
       password: passwordGenerate(password),
       type: 'user',

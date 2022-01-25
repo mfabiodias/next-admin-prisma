@@ -4,7 +4,7 @@ import LoginModel from '../../model/LoginModel'
 interface AuthContextProps {
     user?: LoginModel
     loading?: boolean
-    register?: (email: string, password: string) => Promise<any>
+    register?: (name: string, email: string, password: string) => Promise<any>
     login?: (email: string, password: string) => Promise<any>
     logout?: () => Promise<void>
 }
@@ -56,13 +56,13 @@ export function AuthProvider(props) {
         return responseData;
     }
 
-    async function login(email, password) {
+    async function login(email: string, password: string): Promise<any> {
         const userInputData = { email, password };
         return await postData(userInputData, 'login');
     }
 
-    async function register(email, password) {
-        const userInputData = { email, password };
+    async function register(name: string, email: string, password: string): Promise<any> {
+        const userInputData = { name, email, password };
         return await postData(userInputData, 'register');
     }
 
